@@ -6,6 +6,7 @@ public class Board {
 
     public Board(int rows, int cols) {
         board = new char[rows][cols];
+        initialize();
     }
 
     public char[] getRow(int row) {
@@ -20,6 +21,14 @@ public class Board {
         return column;
     }
 
+    public char getChar(int row, int col) {
+        return board[row][col];
+    }
+
+    public void addChar(int row, int col, char c) {
+        board[row][col] = c;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -29,10 +38,10 @@ public class Board {
         return sb.toString();
     }
 
-    public void prefillWithNumbers() {
+    public void initialize() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = (char) ('0' + (i * board[i].length + j) % 10);
+                board[i][j] = ' ';
             }
         }
     }

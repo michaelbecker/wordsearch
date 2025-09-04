@@ -5,16 +5,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple App.
+ * Unit test for Board class.
  */
-public class WordSearchTest extends TestCase
+public class BoardTest extends TestCase
 {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public WordSearchTest( String testName )
+    public BoardTest( String testName )
     {
         super( testName );
     }
@@ -24,7 +24,7 @@ public class WordSearchTest extends TestCase
      */
     public static Test suite()
     {
-        return new TestSuite( WordSearchTest.class );
+        return new TestSuite( BoardTest.class );
     }
 
     /**
@@ -34,4 +34,16 @@ public class WordSearchTest extends TestCase
     {
         assertTrue( true );
     }
+
+    public void testInitialization() {
+        int rows = 5;
+        int cols = 5;
+        Board b = new Board(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                assertEquals(b.getChar(i, j), ' ');
+            }
+        }
+    }
+
 }
