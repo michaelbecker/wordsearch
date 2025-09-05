@@ -10,7 +10,6 @@ public class WordSearch
     {
         System.out.println( "WordSearch Hello World!" );
         Board board = new Board(3, 3);
-        board.prefillWithNumbers();
         System.out.println(board.toString()); 
     }
 }
