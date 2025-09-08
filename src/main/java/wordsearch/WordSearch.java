@@ -22,7 +22,18 @@ public class WordSearch
         board = new Board(rows, cols);
         letterFrequency = new LetterFrequency();
         randomLetterGenerator = new RandomLetterGenerator(letterFrequency);
+        generateWordSearch();
     }
+
+
+    private void generateWordSearch() {
+        for (String word : wordList) {
+            board.placeWord(word, wordLayout.getRandomDirection());
+        }
+        //board.fillEmptySpaces(randomLetterGenerator);
+        System.out.println(board.toString());
+    }
+
 
     private Board board;
     private WordList wordList;

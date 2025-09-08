@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class WordList implements Iterable<String> {
 
     public WordList(String[] words ) {
-        words = Arrays.copyOf(words, words.length);
+        this.words = Arrays.copyOf(words, words.length);
     }
 
     @Override

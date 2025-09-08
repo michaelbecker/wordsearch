@@ -1,32 +1,12 @@
 package wordsearch;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.*;
 
 /**
  * Unit test for Board class.
  */
-public class BoardTest extends TestCase
+public class BoardTest
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public BoardTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( BoardTest.class );
-    }
-
     
     private Board prefillBoard() {
         int rows = 3;
@@ -41,13 +21,48 @@ public class BoardTest extends TestCase
         return b;
     }
 
-    public void testInitialization() {
+    @Test
+    public void testInitialization1() {
         int rows = 5;
         int cols = 5;
         Board b = new Board(rows, cols);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                assertEquals(b.getChar(i, j), ' ');
+                Assertions.assertEquals(b.getChar(i, j), ' ');
+            }
+        }
+    }
+
+
+    public void testInitialization2() {
+        int rows = 10;
+        int cols = 15;
+        Board b = new Board(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Assertions.assertEquals(b.getChar(i, j), ' ');
+            }
+        }
+    }
+
+    public void testInitialization3() {
+        int rows = 15;
+        int cols = 10;
+        Board b = new Board(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Assertions.assertEquals(b.getChar(i, j), ' ');
+            }
+        }
+    }
+
+    public void testInitialization4(){
+        int rows = 1;
+        int cols = 1;
+        Board b = new Board(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Assertions.assertEquals(b.getChar(i, j), ' ');
             }
         }
     }
@@ -57,9 +72,9 @@ public class BoardTest extends TestCase
         char[] expectedRow0 = {'0', '1', '2'};
         char[] expectedRow1 = {'3', '4', '5'};
         char[] expectedRow2 = {'6', '7', '8'};
-        assertTrue(java.util.Arrays.equals(b.getRow(0), expectedRow0));
-        assertTrue(java.util.Arrays.equals(b.getRow(1), expectedRow1));
-        assertTrue(java.util.Arrays.equals(b.getRow(2), expectedRow2));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getRow(0), expectedRow0));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getRow(1), expectedRow1));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getRow(2), expectedRow2));
     }
 
     public void testGetCol() {
@@ -67,15 +82,15 @@ public class BoardTest extends TestCase
         char[] expectedCol0 = {'0', '3', '6'};
         char[] expectedCol1 = {'1', '4', '7'};
         char[] expectedCol2 = {'2', '5', '8'};
-        assertTrue(java.util.Arrays.equals(b.getCol(0), expectedCol0));
-        assertTrue(java.util.Arrays.equals(b.getCol(1), expectedCol1));
-        assertTrue(java.util.Arrays.equals(b.getCol(2), expectedCol2));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getCol(0), expectedCol0));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getCol(1), expectedCol1));
+        Assertions.assertTrue(java.util.Arrays.equals(b.getCol(2), expectedCol2));
     }
 
     public void testGetChar() {
         Board b = prefillBoard();
-        assertEquals(b.getChar(0, 0), '0');
-        assertEquals(b.getChar(1, 1), '4');
-        assertEquals(b.getChar(2, 2), '8');
+        Assertions.assertEquals(b.getChar(0, 0), '0');
+        Assertions.assertEquals(b.getChar(1, 1), '4');
+        Assertions.assertEquals(b.getChar(2, 2), '8');
     }
 }
