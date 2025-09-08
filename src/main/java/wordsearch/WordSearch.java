@@ -1,9 +1,7 @@
 package wordsearch;
 
-/**
- * Hello world!
- *
- */
+
+
 public class WordSearch
 {
     public static void main( String[] args )
@@ -12,4 +10,24 @@ public class WordSearch
         Board board = new Board(3, 3);
         System.out.println(board.toString());
     }
+
+
+    public WordSearch(  int rows, int cols,
+                        WordList wordList,
+                        WordLayout wordLayout) {
+
+        this.wordList = wordList;
+        this.wordLayout = wordLayout;
+
+        board = new Board(rows, cols);
+        letterFrequency = new LetterFrequency();
+        randomLetterGenerator = new RandomLetterGenerator(letterFrequency);
+    }
+
+    private Board board;
+    private WordList wordList;
+    private LetterFrequency letterFrequency;
+    private RandomLetterGenerator randomLetterGenerator;
+    private WordLayout wordLayout;
+
 }
