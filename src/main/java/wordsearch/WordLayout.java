@@ -1,9 +1,9 @@
 package wordsearch;
 
-public record WordLayout(   int horizontalPercent, 
-                            int verticalPercent, 
-                            int downDiagonalPercent, 
-                            int upDiagonalPercent) 
+public record WordLayout(   int horizontalPercent,
+                            int verticalPercent,
+                            int downDiagonalPercent,
+                            int upDiagonalPercent)
 {
     public WordLayout {
         int total = horizontalPercent + verticalPercent + downDiagonalPercent + upDiagonalPercent;
