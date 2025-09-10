@@ -13,5 +13,8 @@ public class WordSearchTest
         WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
         WordList wordList = new WordList(words);
         WordSearch ws = new WordSearch(10, 10, wordList, wordLayout);
+        ws.toString();
+        Assertions.assertTrue(true);
+        System.out.println(ws);
     }
 }

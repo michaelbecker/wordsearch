@@ -34,6 +34,7 @@ public class BoardTest
     }
 
 
+    @Test
     public void testInitialization2() {
         int rows = 10;
         int cols = 15;
@@ -45,6 +46,8 @@ public class BoardTest
         }
     }
 
+    
+    @Test
     public void testInitialization3() {
         int rows = 15;
         int cols = 10;
@@ -56,6 +59,8 @@ public class BoardTest
         }
     }
 
+
+    @Test
     public void testInitialization4(){
         int rows = 1;
         int cols = 1;
@@ -67,6 +72,8 @@ public class BoardTest
         }
     }
 
+
+    @Test
     public void testGetRow() {
         Board b = prefillBoard();
         char[] expectedRow0 = {'0', '1', '2'};
@@ -77,6 +84,7 @@ public class BoardTest
         Assertions.assertTrue(java.util.Arrays.equals(b.getRow(2), expectedRow2));
     }
 
+    @Test
     public void testGetCol() {
         Board b = prefillBoard();
         char[] expectedCol0 = {'0', '3', '6'};
@@ -87,6 +95,7 @@ public class BoardTest
         Assertions.assertTrue(java.util.Arrays.equals(b.getCol(2), expectedCol2));
     }
 
+    @Test
     public void testGetChar() {
         Board b = prefillBoard();
         Assertions.assertEquals(b.getChar(0, 0), '0');

@@ -31,7 +31,12 @@ public class WordSearch
             board.placeWord(word, wordLayout.getRandomDirection());
         }
         //board.fillEmptySpaces(randomLetterGenerator);
-        System.out.println(board.toString());
+    }
+
+
+    @Override
+    public String toString() {
+        return board.toString();
     }
 
 
