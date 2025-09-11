@@ -8,13 +8,31 @@ import org.junit.jupiter.api.*;
 public class WordSearchTest
 {
     @Test
-    public void testWordSearch() {
+    public void testWordSearch1() {
         String [] words = {"cat", "dog", "fish"};
         WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
         WordList wordList = new WordList(words);
         WordSearch ws = new WordSearch(10, 10, wordList, wordLayout);
         ws.toString();
-        Assertions.assertTrue(true);
-        System.out.println(ws);
+    }
+
+
+    @Test
+    public void testWordSearch2() {
+        String [] words = {"cat", "dog", "fish"};
+        WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
+        WordList wordList = new WordList(words);
+        WordSearch ws = new WordSearch(4, 4, wordList, wordLayout);
+        ws.toString();
+    }
+
+
+    @Test
+    public void testWordSearch3() {
+        String [] words = {"cat", "dog", "fish"};
+        WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
+        WordList wordList = new WordList(words);
+        WordSearch ws = new WordSearch(3, 3, wordList, wordLayout);
+        ws.toString();
     }
 }

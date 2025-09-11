@@ -28,7 +28,8 @@ public class WordSearch
 
     private void generateWordSearch() {
         for (String word : wordList) {
-            board.placeWord(word, wordLayout.getRandomDirection());
+            Direction direction = wordLayout.getRandomDirection();
+            board.placeWord(word, direction);
         }
         //board.fillEmptySpaces(randomLetterGenerator);
     }
