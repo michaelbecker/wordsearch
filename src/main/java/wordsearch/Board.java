@@ -165,4 +165,18 @@ public class Board {
     private char[][] board;
     private final int NUM_ROWS;
     private final int NUM_COLS;
+
+
+    public static void main(String[] argv) 
+    {
+        boolean success;
+        int rows = 3;
+        int cols = 4;
+        Board b = new Board(rows, cols);
+        success = b.isBlank(0, 0, 3, 0, 3);
+        success = b.isBlank(0, 0, 0, 4, 3);
+        success = b.isBlank(0, 0, 3, 4, 4);
+    }
+
+
 }
