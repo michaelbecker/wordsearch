@@ -3,6 +3,7 @@ package wordsearch;
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class Board {
 
 
@@ -41,9 +42,23 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("+");
+        for (int i = 0; i < NUM_COLS; i++)
+            sb.append("-");
+        sb.append("+\n");
+
         for (char[] row : board) {
-            sb.append(new String(row)).append("\n");
+            sb.append("|");
+            sb.append(new String(row));
+            sb.append("|\n");
         }
+
+        sb.append("+");
+        for (int i = 0; i < NUM_COLS; i++)
+            sb.append("-");
+        sb.append("+\n");
+
         return sb.toString();
     }
 
@@ -57,108 +72,143 @@ public class Board {
     }
 
 
-    private boolean isBlank(int start_row, int start_col,
-                            int end_row, int end_col, int length) {
-        int i = 0;
+    private boolean isBlank(int start_row, 
+                            int start_col,
+                            Direction direction, 
+                            int length) {
+
         int row = start_row;
         int col = start_col;
 
-        for (i = 0; i < length; i++) {
+        switch (direction) {
+            case HORIZONTAL:
+                for (int i = 0; i < length; i++, col++) {
+                    if (board[row][col] != ' ')
+                        return false;
+                }
+                return true;
+                       
+            case VERTICAL:
+                for (int i = 0; i < length; i++, row++) {
+                    if (board[row][col] != ' ')
+                        return false;
+                }
+                return true;
 
-            if (board[row][col] != ' ')
+            case DIAGONAL_DOWN:
+                for (int i = 0; i < length; i++, row++, col++) {
+                    if (board[row][col] != ' ')
+                        return false;
+                }
+                return true;
+
+            case DIAGONAL_UP:
+                for (int i = 0; i < length; i++, row--, col++) {
+                    if (board[row][col] != ' ')
+                        return false;
+                }
+                return true;
+
+            default:
                 return false;
-
-            if (start_row < end_row)
-                row++;
-            else if (start_row > end_row)
-                row--;
-
-            if (start_col < end_col)
-                col++;
-            else if (start_col > end_col)
-                col--;
         }
-
-        return true;
     }
 
 
-    private void placeWord(int start_row, int start_col,
-                           int end_row, int end_col,
-                           String word) {
+    private void placeWord( int start_row, 
+                            int start_col,
+                            Direction direction, 
+                            String word) {
 
-        int i = 0;
+
         int row = start_row;
         int col = start_col;
+        int length = word.length();
 
-        for (i = 0; i < word.length(); i++) {
+        switch (direction) {
+            case HORIZONTAL:
+                for (int i = 0; i < length; i++, col++) {
+                    board[row][col] = word.charAt(i);
+                }
+                break;
+                       
+            case VERTICAL:
+                for (int i = 0; i < length; i++, row++) {
+                    board[row][col] = word.charAt(i);
+                }
+                break;
 
-            board[row][col] = word.charAt(i);
+            case DIAGONAL_DOWN:
+                for (int i = 0; i < length; i++, row++, col++) {
+                    board[row][col] = word.charAt(i);
+                }
+                break;
 
-            if (start_row < end_row)
-                row++;
-            else if (start_row > end_row)
-                row--;
-
-            if (start_col < end_col)
-                col++;
-            else if (start_col > end_col)
-                col--;
+            case DIAGONAL_UP:
+                for (int i = 0; i < length; i++, row--, col++) {
+                    board[row][col] = word.charAt(i);
+                }
+                break;
         }
     }
 
 
     public void placeWord(String word, Direction direction) {
 
-        Random random = new Random();
+        SafeRandom random = new SafeRandom();
         int length = word.length();
-        int row;
-        int col;
+        int row = 0;
+        int col = 0;
+        int count = 0;
+        final int MAX_COUNT = 100000;
 
         switch (direction) {
             case HORIZONTAL:
                 do {
-                    row = random.nextInt(NUM_ROWS);
-                    col = random.nextInt(NUM_COLS - length);
-                } while (!isBlank(row, col, row, col + length, length));
-
-                placeWord(row, col, row, col + length , word);
-
+                    row = random.nextIntSafe(NUM_ROWS);
+                    col = random.nextIntSafe(NUM_COLS - length + 1);
+                    if (count++ > MAX_COUNT) {
+                        System.out.println("Infinite loop caught...");
+                        System.exit(-1);
+                    }
+                } while (!isBlank(row, col, Direction.HORIZONTAL, length));
                 break;
 
             case VERTICAL:
                 do {
-                    row = random.nextInt(NUM_ROWS - length);
-                    col = random.nextInt(NUM_COLS);
-                } while (!isBlank(row, col, row + length, col, length));
-
-                placeWord(row, col, row + length, col, word);
-
+                    row = random.nextIntSafe(NUM_ROWS - length + 1);
+                    col = random.nextIntSafe(NUM_COLS);
+                    if (count++ > MAX_COUNT) {
+                        System.out.println("Infinite loop caught...");
+                        System.exit(-1);
+                    }
+                } while (!isBlank(row, col, Direction.VERTICAL, length));
                 break;
 
             case DIAGONAL_DOWN:
                 do {
-                    row = random.nextInt(NUM_ROWS - length);
-                    col = random.nextInt(NUM_COLS - length);
-                } while (!isBlank(row, col, row + length, col + length, length));
-
-                placeWord(row, col, row + length, col + length, word);
-
+                    row = random.nextIntSafe(NUM_ROWS - length + 1);
+                    col = random.nextIntSafe(NUM_COLS - length + 1);
+                    if (count++ > MAX_COUNT) {
+                        System.out.println("Infinite loop caught...");
+                        System.exit(-1);
+                    }
+                } while (!isBlank(row, col, Direction.DIAGONAL_DOWN, length));
                 break;
 
             case DIAGONAL_UP:
                 do {
-                    row = random.nextInt(NUM_ROWS - length);
-                    col = random.nextInt(NUM_COLS - length);
-                } while (!isBlank(row, col, row + length, col + length, length));
-
-                placeWord(row + length, col, row, col + length, word);
-
-                break;
-
-            default:
+                    row = random.nextIntSafe(NUM_ROWS - length) + length - 1;
+                    col = random.nextIntSafe(NUM_COLS - length);
+                    if (count++ > MAX_COUNT) {
+                        System.out.println("Infinite loop caught...");
+                        System.exit(-1);
+                    }
+                } while (!isBlank(row, col, Direction.DIAGONAL_UP, length));
                 break;
         }
+
+        placeWord(row, col, direction, word);
     }
 
 
@@ -173,10 +223,69 @@ public class Board {
         int rows = 3;
         int cols = 4;
         Board b = new Board(rows, cols);
-        success = b.isBlank(0, 0, 3, 0, 3);
-        success = b.isBlank(0, 0, 0, 4, 3);
-        success = b.isBlank(0, 0, 3, 4, 4);
+
+        success = b.isBlank(0, 0, Direction.HORIZONTAL, 4);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(0, 0, Direction.VERTICAL, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(0, 0, Direction.DIAGONAL_DOWN, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(rows - 1, 0, Direction.DIAGONAL_UP, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(0, 1, Direction.DIAGONAL_DOWN, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(rows - 1, 1, Direction.DIAGONAL_UP, 3);
+        System.out.println("success = " + success);
+
+        b.initialize();
+        b.placeWord("fish", Direction.HORIZONTAL);
+        b.placeWord("dogs", Direction.HORIZONTAL);
+        b.placeWord("cats", Direction.HORIZONTAL);
+        System.out.println(b.toString());
+
+        b.initialize();
+        b.placeWord("cat", Direction.VERTICAL);
+        b.placeWord("dog", Direction.VERTICAL);
+        b.placeWord("ant", Direction.VERTICAL);
+        b.placeWord("123", Direction.VERTICAL);
+        System.out.println(b.toString());
+
+        b.initialize();
+        b.placeWord("cat", Direction.DIAGONAL_DOWN);
+        System.out.println(b.toString());
+
+        b.initialize();
+        b.placeWord("cat", Direction.DIAGONAL_UP);
+        System.out.println(b.toString());
+
+        b.initialize();
+        b.placeWord("fsh", Direction.HORIZONTAL);
+        b.placeWord("dog", Direction.HORIZONTAL);
+        b.placeWord("cat", Direction.HORIZONTAL);
+        System.out.println(b.toString());
+
+
+        rows = 4;
+        cols = 3;
+        b = new Board(rows, cols);
+
+        System.out.println(b.toString());
+
+        success = b.isBlank(0, 0, Direction.HORIZONTAL, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(0, 0, Direction.VERTICAL, 4);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(0, 0, Direction.DIAGONAL_DOWN, 3);
+        System.out.println("success = " + success);
+
+        success = b.isBlank(rows - 1, 0, Direction.DIAGONAL_UP, 3);
+        System.out.println("success = " + success);
     }
-
-
 }
