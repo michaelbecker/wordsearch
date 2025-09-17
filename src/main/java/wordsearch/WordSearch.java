@@ -6,9 +6,10 @@ public class WordSearch
 {
     public static void main( String[] args )
     {
-        System.out.println( "WordSearch Hello World!" );
-        Board board = new Board(3, 3);
-        System.out.println(board.toString());
+        String [] words = {"cat", "dog", "fish"};
+        WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
+        WordList wordList = new WordList(words);
+        WordSearch ws = new WordSearch(10, 10, wordList, wordLayout);
     }
 
 
@@ -31,7 +32,9 @@ public class WordSearch
             Direction direction = wordLayout.getRandomDirection();
             board.placeWord(word, direction);
         }
-        //board.fillEmptySpaces(randomLetterGenerator);
+        board.fillEmptySpaces(randomLetterGenerator);
+
+        System.out.println(board.toString());
     }
 
 

@@ -2,7 +2,7 @@ package wordsearch;
 
 import java.util.Random;
 
-public class SafeRandom extends Random 
+public class SafeRandom extends Random
 {
 
     public int nextIntSafe(int bound)

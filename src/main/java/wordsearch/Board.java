@@ -1,7 +1,6 @@
 package wordsearch;
 
 import java.util.Arrays;
-import java.util.Random;
 
 
 public class Board {
@@ -72,9 +71,9 @@ public class Board {
     }
 
 
-    private boolean isBlank(int start_row, 
+    private boolean isBlank(int start_row,
                             int start_col,
-                            Direction direction, 
+                            Direction direction,
                             int length) {
 
         int row = start_row;
@@ -87,7 +86,7 @@ public class Board {
                         return false;
                 }
                 return true;
-                       
+
             case VERTICAL:
                 for (int i = 0; i < length; i++, row++) {
                     if (board[row][col] != ' ')
@@ -115,9 +114,9 @@ public class Board {
     }
 
 
-    private void placeWord( int start_row, 
+    private void placeWord( int start_row,
                             int start_col,
-                            Direction direction, 
+                            Direction direction,
                             String word) {
 
 
@@ -131,7 +130,7 @@ public class Board {
                     board[row][col] = word.charAt(i);
                 }
                 break;
-                       
+
             case VERTICAL:
                 for (int i = 0; i < length; i++, row++) {
                     board[row][col] = word.charAt(i);
@@ -208,12 +207,29 @@ public class Board {
     }
 
 
+    public void fillEmptySpaces(RandomLetterGenerator randomLetterGenerator) {
+
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                if (board[i][j] == ' ') {
+                    board[i][j] = randomLetterGenerator.generateRandomLetter();
+                }
+            }
+        }
+    }
+
     private char[][] board;
     private final int NUM_ROWS;
     private final int NUM_COLS;
 
 
-    public static void main(String[] argv) 
+    public static void main(String[] argv)
+    {
+        debugTest1();
+    }
+
+
+    private static void debugTest1()
     {
         boolean success;
         int rows = 3;
