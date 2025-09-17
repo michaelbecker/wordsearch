@@ -168,8 +168,7 @@ public class Board {
                     row = random.nextIntSafe(NUM_ROWS);
                     col = random.nextIntSafe(NUM_COLS - length + 1);
                     if (count++ > MAX_COUNT) {
-                        System.out.println("Infinite loop caught...");
-                        System.exit(-1);
+                        throw new RuntimeException("Infinite loop caught...");
                     }
                 } while (!isBlank(row, col, Direction.HORIZONTAL, length));
                 break;
@@ -179,8 +178,7 @@ public class Board {
                     row = random.nextIntSafe(NUM_ROWS - length + 1);
                     col = random.nextIntSafe(NUM_COLS);
                     if (count++ > MAX_COUNT) {
-                        System.out.println("Infinite loop caught...");
-                        System.exit(-1);
+                        throw new RuntimeException("Infinite loop caught...");
                     }
                 } while (!isBlank(row, col, Direction.VERTICAL, length));
                 break;
@@ -190,8 +188,7 @@ public class Board {
                     row = random.nextIntSafe(NUM_ROWS - length + 1);
                     col = random.nextIntSafe(NUM_COLS - length + 1);
                     if (count++ > MAX_COUNT) {
-                        System.out.println("Infinite loop caught...");
-                        System.exit(-1);
+                        throw new RuntimeException("Infinite loop caught...");
                     }
                 } while (!isBlank(row, col, Direction.DIAGONAL_DOWN, length));
                 break;
@@ -201,8 +198,7 @@ public class Board {
                     row = random.nextIntSafe(NUM_ROWS - length) + length - 1;
                     col = random.nextIntSafe(NUM_COLS - length);
                     if (count++ > MAX_COUNT) {
-                        System.out.println("Infinite loop caught...");
-                        System.exit(-1);
+                        throw new RuntimeException("Infinite loop caught...");
                     }
                 } while (!isBlank(row, col, Direction.DIAGONAL_UP, length));
                 break;

@@ -32,7 +32,7 @@ public class WordSearchTest
         String [] words = {"cat", "dog", "fish"};
         WordLayout wordLayout = new WordLayout(25, 25, 25, 25);
         WordList wordList = new WordList(words);
-        WordSearch ws = new WordSearch(3, 3, wordList, wordLayout);
+        WordSearch ws = new WordSearch(4, 4, wordList, wordLayout);
         ws.toString();
     }
 }
