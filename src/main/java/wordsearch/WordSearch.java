@@ -28,10 +28,14 @@ public class WordSearch
 
 
     private void generateWordSearch() {
+
+        wordList.setIterateBySizeReversed();
+        
         for (String word : wordList) {
             Direction direction = wordLayout.getRandomDirection();
             board.placeWord(word, direction);
         }
+        
         board.fillEmptySpaces(randomLetterGenerator);
 
         System.out.println(board.toString());

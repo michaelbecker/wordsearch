@@ -8,6 +8,7 @@ public record WordLayout(   int horizontalPercent,
                             int downDiagonalPercent,
                             int upDiagonalPercent)
 {
+    
     public WordLayout {
         int total = horizontalPercent + verticalPercent + downDiagonalPercent + upDiagonalPercent;
         if (total != 100) {
@@ -15,16 +16,22 @@ public record WordLayout(   int horizontalPercent,
         }
     }
 
+
     public Direction getRandomDirection() {
+        
         Random random = new Random();
         int rand = random.nextInt(100);
+        
         if (rand < horizontalPercent) {
             return Direction.HORIZONTAL;
-        } else if (rand < horizontalPercent + verticalPercent) {
+        } 
+        else if (rand < horizontalPercent + verticalPercent) {
             return Direction.VERTICAL;
-        } else if (rand < horizontalPercent + verticalPercent + downDiagonalPercent) {
+        } 
+        else if (rand < horizontalPercent + verticalPercent + downDiagonalPercent) {
             return Direction.DIAGONAL_DOWN;
-        } else {
+        } 
+        else {
             return Direction.DIAGONAL_UP;
         }
     }

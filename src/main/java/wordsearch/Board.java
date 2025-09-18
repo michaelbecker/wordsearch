@@ -114,7 +114,7 @@ public class Board {
     }
 
 
-    private void placeWord( int start_row,
+    private void writeWordToBoard( int start_row,
                             int start_col,
                             Direction direction,
                             String word) {
@@ -158,52 +158,74 @@ public class Board {
         int length = word.length();
         int row = 0;
         int col = 0;
-        int count = 0;
+        int fitCount = 0;
         final int MAX_COUNT = 100000;
+        int directionCount;
 
-        switch (direction) {
-            case HORIZONTAL:
-                do {
-                    row = random.nextIntSafe(NUM_ROWS);
-                    col = random.nextIntSafe(NUM_COLS - length + 1);
-                    if (count++ > MAX_COUNT) {
-                        throw new RuntimeException("Infinite loop caught...");
-                    }
-                } while (!isBlank(row, col, Direction.HORIZONTAL, length));
-                break;
+        FIT_LOOP:
+        for (directionCount = 0; directionCount < Direction.NUM_DIRECTIONS; directionCount++) {
 
-            case VERTICAL:
-                do {
-                    row = random.nextIntSafe(NUM_ROWS - length + 1);
-                    col = random.nextIntSafe(NUM_COLS);
-                    if (count++ > MAX_COUNT) {
-                        throw new RuntimeException("Infinite loop caught...");
-                    }
-                } while (!isBlank(row, col, Direction.VERTICAL, length));
-                break;
+            switch (direction) {
 
-            case DIAGONAL_DOWN:
-                do {
-                    row = random.nextIntSafe(NUM_ROWS - length + 1);
-                    col = random.nextIntSafe(NUM_COLS - length + 1);
-                    if (count++ > MAX_COUNT) {
-                        throw new RuntimeException("Infinite loop caught...");
-                    }
-                } while (!isBlank(row, col, Direction.DIAGONAL_DOWN, length));
-                break;
+                case HORIZONTAL:
+                    do {
+                        row = random.nextIntSafe(NUM_ROWS);
+                        col = random.nextIntSafe(NUM_COLS - length + 1);
+                        if (fitCount++ > MAX_COUNT) {
+                            direction = direction.getNext();
+                            fitCount = 0;
+                            break;
+                        }
+                    } while (!isBlank(row, col, Direction.HORIZONTAL, length));
+                    break FIT_LOOP;
 
-            case DIAGONAL_UP:
-                do {
-                    row = random.nextIntSafe(NUM_ROWS - length) + length - 1;
-                    col = random.nextIntSafe(NUM_COLS - length);
-                    if (count++ > MAX_COUNT) {
-                        throw new RuntimeException("Infinite loop caught...");
-                    }
-                } while (!isBlank(row, col, Direction.DIAGONAL_UP, length));
-                break;
+                case VERTICAL:
+                    do {
+                        row = random.nextIntSafe(NUM_ROWS - length + 1);
+                        col = random.nextIntSafe(NUM_COLS);
+                        if (fitCount++ > MAX_COUNT) {
+                            direction = direction.getNext();
+                            fitCount = 0;
+                            break;
+                        }
+                    } while (!isBlank(row, col, Direction.VERTICAL, length));
+                    break FIT_LOOP;
+
+                case DIAGONAL_DOWN:
+                    do {
+                        row = random.nextIntSafe(NUM_ROWS - length + 1);
+                        col = random.nextIntSafe(NUM_COLS - length + 1);
+                        if (fitCount++ > MAX_COUNT) {
+                            direction = direction.getNext();
+                            fitCount = 0;
+                            break;
+                        }
+                    } while (!isBlank(row, col, Direction.DIAGONAL_DOWN, length));
+                    break FIT_LOOP;
+
+                case DIAGONAL_UP:
+                    do {
+                        row = random.nextIntSafe(NUM_ROWS - length) + length - 1;
+                        col = random.nextIntSafe(NUM_COLS - length);
+                        if (fitCount++ > MAX_COUNT) {
+                            direction = direction.getNext();
+                            fitCount = 0;
+                            break;
+                        }
+                    } while (!isBlank(row, col, Direction.DIAGONAL_UP, length));
+                    break FIT_LOOP;
+            }
         }
 
-        placeWord(row, col, direction, word);
+        if (directionCount < Direction.NUM_DIRECTIONS) {
+            writeWordToBoard(row, col, direction, word);
+        }
+        else {
+            System.out.println("Unfitable word: " + word);
+            System.out.println("direction: " + direction.toString());
+            System.out.println(toString());
+            throw new RuntimeException("Infinite loop caught...");
+        }
     }
 
 
