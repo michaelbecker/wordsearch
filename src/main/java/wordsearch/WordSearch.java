@@ -31,9 +31,10 @@ public class WordSearch
 
         wordList.setIterateBySizeReversed();
         
+        // TODO -- Need to recursivey fit this, with backtracking...
         for (String word : wordList) {
             Direction direction = wordLayout.getRandomDirection();
-            board.placeWord(word, direction);
+            boolean success = board.placeWord(word, direction);
         }
         
         board.fillEmptySpaces(randomLetterGenerator);

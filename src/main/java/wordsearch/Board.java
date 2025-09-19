@@ -14,6 +14,19 @@ public class Board {
     }
 
 
+    public Board(Board old) {
+        NUM_ROWS = old.NUM_ROWS;
+        NUM_COLS = old.NUM_COLS;
+
+        board = new char[old.board.length][];
+        for (int i = 0; i < old.board.length; i++) {
+            board[i] = new char[old.board[i].length];
+            for (int j = 0; j < old.board[i].length; j++)
+                board[i][j] = old.board[i][j];
+        }
+    }
+
+
     public char[] getRow(int row) {
         return Arrays.copyOf(board[row], NUM_COLS);
     }
@@ -114,6 +127,54 @@ public class Board {
     }
 
 
+    private boolean willFit( int start_row,
+                            int start_col,
+                            Direction direction,
+                            String word) {
+
+
+        int row = start_row;
+        int col = start_col;
+        int length = word.length();
+
+        switch (direction) {
+            case HORIZONTAL:
+                for (int i = 0; i < length; i++, col++) {
+                    if ((board[row][col] != ' ') && (board[row][col] != word.charAt(i))) {
+                        return false;
+                    }
+                }
+                break;
+
+            case VERTICAL:
+                for (int i = 0; i < length; i++, row++) {
+                    if ((board[row][col] != ' ') && (board[row][col] != word.charAt(i))) {
+                        return false;
+                    }
+                }
+                break;
+
+            case DIAGONAL_DOWN:
+                for (int i = 0; i < length; i++, row++, col++) {
+                    if ((board[row][col] != ' ') && (board[row][col] != word.charAt(i))) {
+                        return false;
+                    }
+                }
+                break;
+
+            case DIAGONAL_UP:
+                for (int i = 0; i < length; i++, row--, col++) {
+                    if ((board[row][col] != ' ') && (board[row][col] != word.charAt(i))) {
+                        return false;
+                    }
+                }
+                break;
+        }
+
+        return true;
+    }
+
+
     private void writeWordToBoard( int start_row,
                             int start_col,
                             Direction direction,
@@ -152,7 +213,7 @@ public class Board {
     }
 
 
-    public void placeWord(String word, Direction direction) {
+    public boolean placeWord(String word, Direction direction) {
 
         SafeRandom random = new SafeRandom();
         int length = word.length();
@@ -176,7 +237,7 @@ public class Board {
                             fitCount = 0;
                             break;
                         }
-                    } while (!isBlank(row, col, Direction.HORIZONTAL, length));
+                    } while (!willFit(row, col, Direction.HORIZONTAL, word));
                     break FIT_LOOP;
 
                 case VERTICAL:
@@ -188,7 +249,7 @@ public class Board {
                             fitCount = 0;
                             break;
                         }
-                    } while (!isBlank(row, col, Direction.VERTICAL, length));
+                    } while (!willFit(row, col, Direction.VERTICAL, word));
                     break FIT_LOOP;
 
                 case DIAGONAL_DOWN:
@@ -200,7 +261,7 @@ public class Board {
                             fitCount = 0;
                             break;
                         }
-                    } while (!isBlank(row, col, Direction.DIAGONAL_DOWN, length));
+                    } while (!willFit(row, col, Direction.DIAGONAL_DOWN, word));
                     break FIT_LOOP;
 
                 case DIAGONAL_UP:
@@ -212,19 +273,20 @@ public class Board {
                             fitCount = 0;
                             break;
                         }
-                    } while (!isBlank(row, col, Direction.DIAGONAL_UP, length));
+                    } while (!willFit(row, col, Direction.DIAGONAL_UP, word));
                     break FIT_LOOP;
             }
         }
 
         if (directionCount < Direction.NUM_DIRECTIONS) {
             writeWordToBoard(row, col, direction, word);
+            return true;
         }
         else {
             System.out.println("Unfitable word: " + word);
             System.out.println("direction: " + direction.toString());
             System.out.println(toString());
-            throw new RuntimeException("Infinite loop caught...");
+            return false;
         }
     }
 
@@ -239,6 +301,7 @@ public class Board {
             }
         }
     }
+
 
     private char[][] board;
     private final int NUM_ROWS;
@@ -258,29 +321,14 @@ public class Board {
         int cols = 4;
         Board b = new Board(rows, cols);
 
-        success = b.isBlank(0, 0, Direction.HORIZONTAL, 4);
-        System.out.println("success = " + success);
-
-        success = b.isBlank(0, 0, Direction.VERTICAL, 3);
-        System.out.println("success = " + success);
-
-        success = b.isBlank(0, 0, Direction.DIAGONAL_DOWN, 3);
-        System.out.println("success = " + success);
-
-        success = b.isBlank(rows - 1, 0, Direction.DIAGONAL_UP, 3);
-        System.out.println("success = " + success);
-
-        success = b.isBlank(0, 1, Direction.DIAGONAL_DOWN, 3);
-        System.out.println("success = " + success);
-
-        success = b.isBlank(rows - 1, 1, Direction.DIAGONAL_UP, 3);
-        System.out.println("success = " + success);
-
         b.initialize();
         b.placeWord("fish", Direction.HORIZONTAL);
         b.placeWord("dogs", Direction.HORIZONTAL);
         b.placeWord("cats", Direction.HORIZONTAL);
         System.out.println(b.toString());
+
+        Board copy_b = new Board(b);
+        System.out.println(copy_b.toString());
 
         b.initialize();
         b.placeWord("cat", Direction.VERTICAL);
@@ -291,6 +339,9 @@ public class Board {
 
         b.initialize();
         b.placeWord("cat", Direction.DIAGONAL_DOWN);
+        b.placeWord("bat", Direction.DIAGONAL_UP);
+        b.placeWord("cob", Direction.VERTICAL);
+        b.placeWord("tot", Direction.VERTICAL);
         System.out.println(b.toString());
 
         b.initialize();
